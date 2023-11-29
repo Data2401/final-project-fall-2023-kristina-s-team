@@ -12,8 +12,6 @@ number_sections: no
 toc: yes
 ---
 
- 
-
 ```{r include = FALSE}
 
 knitr::opts_chunk$set(echo = FALSE)
@@ -63,7 +61,7 @@ library(ggridges)
 
 # set up plotting theme
 
-theme_jason <- function(legend_pos="top", base_size=12, font=NA){
+main_theme <- function(legend_pos="top", base_size=12, font=NA){
 
  
 
@@ -340,7 +338,7 @@ injury_record %>%
 
   coord_flip() +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -371,7 +369,7 @@ p1 <- play_list %>%
 
   coord_flip() +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -391,7 +389,7 @@ p2 <- injury_record %>%
 
   coord_flip() +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -459,7 +457,7 @@ play_list %>%
 
   ggtitle("Natural Grass vs Synthetic Turf", subtitle = "Of over 5,700 plays analysed, injuries occured more frequently on Synthetic") +
 
-  theme_jason() +
+  main_theme() +
 
   theme(axis.title.y = element_blank(), axis.text.y = element_blank()) +
 
@@ -494,7 +492,7 @@ injury_record %>%
 
   ggtitle("Surface and Body Type Relationship", subtitle = "60% of ankle injuries occur on Synthetic, while\nknee injuries occur with identical frequency on both surfaces") +
 
-  theme_jason() +
+  main_theme() +
 
   theme(axis.title.y = element_blank()) +
 
@@ -542,7 +540,7 @@ injury_record %>%
 
   ggtitle("Some Differences Between Body Part and Severity", subtitle = "Foot injuries generally have longer recovery times") +
 
-  theme_jason() +
+  main_theme() +
 
   theme(axis.title.y = element_blank()) +
 
@@ -571,7 +569,7 @@ injury_record %>%
 
   ggtitle("There Are Minimal Differences in Severity Based On Surface", subtitle = "The time missed because of injury doesn't really differ\nbetween playing surfaces") +
 
-  theme_jason() +
+  main_theme() +
 
   theme(axis.title.y = element_blank()) +
 
@@ -658,7 +656,7 @@ p1 <- injury_record %>%
 
   coord_flip() +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -684,7 +682,7 @@ p2 <- injury_record %>%
 
   coord_flip() +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -716,7 +714,7 @@ injury_record %>%
 
   labs(x= "Field Type", y= "Game Play") +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -743,7 +741,7 @@ p1 <- injury_record %>%
 
   ggtitle("The Number of Injuries Per Game Decreases", subtitle = "Week 3 has the most injuries (n=9)") +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -765,7 +763,7 @@ p2 <- play_list %>%
 
   ggtitle("Number of Players Injured Per Game Also Decreases") +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -803,7 +801,7 @@ injury_record %>%
 
   ggtitle("Players Are More Likely To Be Injured By The 8th Game", subtitle = "The injury rate peaks at week 3 at 3.6%") +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -838,7 +836,7 @@ play_list %>%
 
   coord_flip() +
 
-  theme_jason() +
+  main_theme() +
 
   theme_minimal()
 
@@ -884,7 +882,7 @@ play_list %>%
 
   coord_flip() +
 
-  theme_jason() +
+  main_theme() +
 
   theme(axis.title.y = element_blank(), axis.text.x = element_blank(), plot.caption = element_text(colour = "darkgrey")) + theme_minimal()
 
@@ -924,7 +922,7 @@ play_list %>%
 
   coord_flip() +
 
-  theme_jason() +
+  main_theme() +
 
   theme(axis.title.y = element_blank(), axis.text.x = element_blank()) +
 
@@ -964,7 +962,7 @@ play_list %>%
 
   coord_flip() +
 
-  theme_jason() +
+  main_theme() +
 
   theme(axis.title.y = element_blank(), axis.text.x = element_blank()) +
 

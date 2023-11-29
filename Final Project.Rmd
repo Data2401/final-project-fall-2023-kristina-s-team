@@ -4,7 +4,6 @@ author: "Kristina Lau"
 date: "2023-11-20"
 output: html_document
 theme: modern
-highlight: tango
 df_print: paged
 fig_height: 8
 fig_width: 20
@@ -41,7 +40,7 @@ library(ggridges)
 
 ```{r, message=FALSE, warning=FALSE}
 # set up plotting theme
-theme_jason <- function(legend_pos="top", base_size=12, font=NA){
+main_theme <- function(legend_pos="top", base_size=12, font=NA){
   
   # come up with some default text details
   txt <- element_text(size = base_size+3, colour = "black", face = "plain")
@@ -154,41 +153,6 @@ We'll clean these up to five distinct types, and also an additional one for *unk
 * `dome_closed`
 * `dome_open`
 
-```{r, warning=FALSE, message=FALSE}
-outdoor <- c('Outdoor', 'Outdoors', 'Cloudy', 'Heinz Field', 
-             'Outdor', 'Ourdoor', 'Outside', 'Outddors', 
-             'Outdoor Retr Roof-Open', 'Oudoor', 'Bowl')
-
-indoor_closed <- c('Indoors', 'Indoor', 'Indoor, Roof Closed', 'Indoor', 'Roof Closed',
-                   'Retractable Roof', 'Retr. Roof-Closed', 'Retr. Roof - Closed', 'Retr. Roof Closed')
-
-indoor_open <- c('Indoor, Open Roof', 'Open', 'Retr. Roof-Open', 'Retr. Roof - Open')
-
-dome_closed <- c('Dome', 'Domed, closed', 'Closed Dome', 'Domed', 'Dome, closed')
-
-dome_open <- c('Domed, Open', 'Domed, open')
-
-convert_stadiums <- function(x) {
-  if(x %in% outdoor) {
-    "outdoor"
-  } else if(x %in% indoor_closed) {
-    "indoor closed"
-  } else if(x %in% indoor_open) {
-    "indoor open"
-  } else if(x %in% dome_closed) {
-    "dome_closed"
-  } else if( x %in% dome_open) {
-    "dome_open"
-  } else {
-    "unknown"
-  }
-  
-}    
-
-play_list <- play_list %>% 
-  mutate(StadiumType = mapply(convert_stadiums, StadiumType))
-```
-
 ### Weather
 
 Similarly the weather.
@@ -278,7 +242,7 @@ injury_record %>%
   labs(x= "Body Part", y= "Num Injuries") +
   ggtitle("Injuries That Occured On The Lower Limbs", subtitle = "86% of the injury records made up by knees and ankles") +
   coord_flip() +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
 ```
 
@@ -295,7 +259,7 @@ p1 <- play_list %>%
   ggtitle("More Games Were Played On Natural Turf", subtitle = "58% of games in our data were played on Natural Turf") +
   scale_y_continuous(labels = comma) +
   coord_flip() +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
 
 p2 <- injury_record %>% 
@@ -305,7 +269,7 @@ p2 <- injury_record %>%
   labs(x= "Surface", y= "Num Injuries") +
   ggtitle("Slight Difference If By Absolute Terms", subtitle = "Synthetic surfaces have slightly more injuries in absolute terms") +
   coord_flip() +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
 
 
@@ -340,7 +304,7 @@ play_list %>%
   geom_hline(yintercept = 0.0182, linetype = 2, colour = plot_cols[3]) +
   annotate(geom = "text", x=0.8, y= 0.0192, label = "Injuries are likely to occur\non 1.8% of all plays", colour = plot_cols[3], size = 5) +
   ggtitle("Natural Grass vs Synthetic Turf", subtitle = "Of over 5,700 plays analysed, injuries occured more frequently on Synthetic") +
-  theme_jason() +
+  main_theme() +
   theme(axis.title.y = element_blank(), axis.text.y = element_blank()) +
   theme_minimal()
 
@@ -359,7 +323,7 @@ injury_record %>%
   scale_colour_manual(values = plot_cols[c(2,3)]) +
   scale_y_continuous(labels = percent) +
   ggtitle("Surface and Body Type Relationship", subtitle = "60% of ankle injuries occur on Synthetic, while\nknee injuries occur with identical frequency on both surfaces") +
-  theme_jason() +
+  main_theme() +
   theme(axis.title.y = element_blank()) +
   theme_minimal()
 ```
@@ -388,7 +352,7 @@ injury_record %>%
   scale_colour_manual(values = plot_cols, guide = "none") +
   scale_y_continuous(labels = percent) +
   ggtitle("Some Differences Between Body Part and Severity", subtitle = "Foot injuries generally have longer recovery times") +
-  theme_jason() +
+  main_theme() +
   theme(axis.title.y = element_blank()) +
   theme_minimal()
 ```
@@ -404,7 +368,7 @@ injury_record %>%
   scale_colour_manual(values = plot_cols, guide = "none") +
   scale_y_continuous(labels = percent) +
   ggtitle("There Are Minimal Differences in Severity Based On Surface", subtitle = "The time missed because of injury doesn't really differ\nbetween playing surfaces") +
-  theme_jason() +
+  main_theme() +
   theme(axis.title.y = element_blank()) +
   theme_minimal()
 ```
@@ -451,7 +415,7 @@ p1 <- injury_record %>%
   ggtitle("Position Injuries", subtitle = "Wide Receivers are the most frequently injured") +
   labs(x= "Position on Play", y= "Injury Count") +
   coord_flip() +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
   
 p2 <- injury_record %>% 
@@ -464,7 +428,7 @@ p2 <- injury_record %>%
   ggtitle("Where Each Injury Occured Based On Player Position", subtitle = "Injury location seems to differ based on player's position on the play") +
   labs(x= "Position on Play", y= "Injury Proportion") +
   coord_flip() +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
 
 gridExtra::grid.arrange(p1, p2)
@@ -484,7 +448,7 @@ injury_record %>%
   scale_colour_manual(values = plot_cols, guide = "none") +
   ggtitle("Injuries Tend to Occur Earlier in the Season", subtitle = "28 records were not included as exact play where injury occurred is unknown") +
   labs(x= "Field Type", y= "Game Play") +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
 ```
 
@@ -499,7 +463,7 @@ p1 <- injury_record %>%
   geom_point(colour = plot_cols[1], size = 3) +
   labs(x= "Game Number", y= "Number Injuries") +
   ggtitle("The Number of Injuries Per Game Decreases", subtitle = "Week 3 has the most injuries (n=9)") +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
 
 
@@ -510,7 +474,7 @@ p2 <- play_list %>%
   geom_point(colour = plot_cols[3], size = 3) +
   labs(x= "Game Number", y= "Number Players") +
   ggtitle("Number of Players Injured Per Game Also Decreases") +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
 
 gridExtra::grid.arrange(p1, p2, ncol = 1)
@@ -531,7 +495,7 @@ injury_record %>%
   labs(x= "Game Number", y= "Injury Rate") +
   scale_y_continuous(labels = percent) +
   ggtitle("Players Are More Likely To Be Injured By The 8th Game", subtitle = "The injury rate peaks at week 3 at 3.6%") +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
 ```
 
@@ -549,7 +513,7 @@ play_list %>%
   labs(x= "Player Injured?") +
   ggtitle("Temperature Isn't as Big of a Deal", subtitle = "There is a slightly higher chance of a player being injured in higher temperatures") +
   coord_flip() +
-  theme_jason() +
+  main_theme() +
   theme_minimal()
 ```
 
@@ -574,7 +538,7 @@ play_list %>%
   ggtitle("Injuries Are More Likely to Occur In the Rain") +
   labs(caption = "*Indoor stadiums excluded") +
   coord_flip() +
-  theme_jason() +
+  main_theme() +
   theme(axis.title.y = element_blank(), axis.text.x = element_blank(), plot.caption = element_text(colour = "darkgrey")) + theme_minimal()
   
 ```
@@ -596,7 +560,7 @@ play_list %>%
   scale_y_continuous(labels = comma, name = "% Plays") +
   ggtitle("Roof Problems", subtitle = "Injuries are more likely to occur in indoor stadiums with the roof open") +
   coord_flip() +
-  theme_jason() +
+  main_theme() +
   theme(axis.title.y = element_blank(), axis.text.x = element_blank()) +
   theme_minimal()
 ```
@@ -618,7 +582,7 @@ play_list %>%
   scale_y_continuous(labels = comma, name = "% Plays") +
   ggtitle("Indoor Stadiums With Synthetic Turf Are The Worst", subtitle = "Injuries are far more likely here, with 7% injury rate") +
   coord_flip() +
-  theme_jason() +
+  main_theme() +
   theme(axis.title.y = element_blank(), axis.text.x = element_blank()) + 
   facet_wrap(~ FieldType) +
   theme_minimal()
