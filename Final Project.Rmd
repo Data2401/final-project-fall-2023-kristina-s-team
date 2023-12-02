@@ -1,0 +1,55 @@
+---
+title: "Do NFL Injuries Get Better Throughout A Season?"
+author: "Kristina Lau"
+date: "2023-11-30"
+output: html_document
+fig_height: 10
+fig_width: 20
+number_sections: no
+toc: yes
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+
+# Packages I Used
+```{r, echo = TRUE, message=FALSE, warning=FALSE}
+#helps with data import, tidying, manipulation and data visualization
+library(tidyverse)
+#helps create complex graphs and plots
+library(ggplot2)
+#will help with dates and times
+library(scales)
+```
+
+# The Data
+
+The data I will be using is from different various websites about NFL injuries throughout the 2016-2020 seasons. However, one of the articles does not include any data about the 2017-2018 season as they deemed the records incomplete so they did not include that season in their article. 
+
+```{r, echo = TRUE, message=FALSE, warning=FALSE}
+early_injuries_positions <- read.csv("Preseason Injury Positions.csv")
+entire_season <- read.csv("InjuryRecord - InjuryRecord.csv")
+
+```
+
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+data_2016 <- subset(early_injuries_positions, Year == 2016)
+  
+ggplot(early_injuries_positions, aes(x = QB, y = 1, color = QB)) +
+  geom_bar(color = "black", alpha = 0.7) +
+  geom_text(stat = "count", aes(label = after_stat(count)), vjust = -0.5, size = 3) +
+  labs(title = "Body Part Injuries", x = "Year", y = "Total") 
+```
+
+
+
+# References
+
+
+
+# Conclusion
