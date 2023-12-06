@@ -1,5 +1,5 @@
 ---
-title: "Do NFL Injuries Get Better Throughout A Season?"
+title: "Is Synthetic Turf Worse for NFL Injuries?"
 author: "Kristina Lau"
 date: "2023-11-30"
 output: html_document
@@ -15,26 +15,19 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
 
 ## Introduction
 
-  Throughout the NFL's history, it has always been plagued by injuries. However, the NFL is always striving to improve their player's safety and as a result has made vast improvements when it comes to player healthcare, recovery, and medical procedures. Despite these efforts, players continue to be injured and, in recent seasons, injuries appear to be increasing. 
-  
-  In this analysis, I will be answering whether or not player injuries decrease throughout a season and if there is anything we can do to lessen the amount of injuries overall. 
-  
+  Throughout the NFL's history, it has always been plagued by injuries. However, the NFL is always striving to improve their player's safety and as a result has made vast improvements when it comes to player healthcare, recovery, and medical procedures. Despite these efforts, players continue to be injured and, in recent seasons, injuries appear to be increasing with synthetic turf being one of the major complaints. 
+ 
+   In this analysis, I will be answering whether or not player injuries are impacted by synthetic grass and if there is a way to decrease the amount of injuries caused by them.  
   
 # Questions
 
 The questions I will be asking and attempting to answer are:
 
-* ARE injuries actually getting better?
-
-* Do player injuries increase or decrease throughout a season?
-
-* When during the season do most players get injured?
+* Is there a relationship between injuries and the type of turf stadiums use?
 
 * Which positions get injured more often?
 
 * What is the cause of these injuries if any?
-
-* Is there a relationship between injuries and the type of turf stadiums use?
 
 * Is there a way to lessen the amount of injuries in the NFL?
 
@@ -94,6 +87,8 @@ The data I will be using is from the website Kaggle. They were provided for an o
  * Play List: The play list file contains the details for 267, 005 player-plays that make up the dataset. Each play is indexed by PlayKey, GameID, and PlayKey fields. Details about the game and play include the player's assigned roster position, stadium type, field type, weather, play type, position for the play, and position group. 
 
 ```{r, echo = TRUE, message=FALSE, warning=FALSE}
+
+#Saving my data under new variables 
 injury_record <- read.csv("InjuryRecord - InjuryRecord.csv")
 head(injury_record)
 play_list <- read.csv("PlayList - PlayList.csv")
@@ -101,7 +96,13 @@ head(play_list)
 
 ```
 
-Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening from the lower limbs. 
+(Clean up the data)
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+ 
+```
+
+Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankle. With both of them making up 86% of the total injuries. 
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
@@ -114,7 +115,8 @@ ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
             size = 3) +
   labs(title = "Injuries By Body Part", x = "Body Part", y = "Total")
 ```
-(fact plot graph that shows which positions are being injured the most)
+
+(facet plot graph that shows which positions are being injured the most)
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(play_list, aes(x = Position, fill = Position)) +
@@ -128,17 +130,11 @@ ggplot(play_list, aes(x = Position, fill = Position)) +
 
 # Stadiums
 
-Here are all of the different stadiums where the injuries happened. (this is where kableextra goes)
+Here is a list for all of the different stadiums where the injuries happened. (this is where kableextra goes)
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 
   
-```
-
-
-
-```{r, echo = FALSE, message=FALSE, warning=FALSE}
-
 ```
 
 (facet graph that shows which position is being injured more and on which surface)
@@ -158,18 +154,10 @@ ggplot(play_list, aes(x = Position, y = FieldType)) +
 
 ```
 
-```{r, echo = FALSE, message=FALSE, warning=FALSE}
 
+# Natural vs Synthetic Turf
 
-```
-
-
-```{r,echo = FALSE, message=FALSE, warning=FALSE}
-ggplot(play_list) +
-  geom_col(aes(x = PlayerGame, y = Position), fill = "purple1") 
-
-```
-
+According to the data from our dataset, injuries appear to happen more often on synthetic turf than natural turf. 
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(injury_record, aes(x = Surface, fill = Surface)) +
@@ -194,11 +182,14 @@ Synthetic turf, also known as artificial turf, is a specially designed surface c
 
 The first NFL team to officially use synthetic turf on their home field was the Seattle Seahawks in 2002. This largely impacted the league as there was an increase in team owners deciding to change their fields in favor of synthetic turf. This was largely due to the owners realizing that synthetic turf is cheaper and easier to manage than natural grass. As of 2021, 15 NFL fields out of 30 use synthetic turf.
 
+However, after researching the true costs of synthetic turf I've discovered that the costs to install and maintain synthetic turfs are actually much higher than it would be to maintain natural grass fields. 
+
 ***
 
-## References
+# References
+
 
 
 # Summary
 
-In the NFL, injuries will always happen since that is the nature of sports. Many factors can go into an NFL player's injury, but after looking through the provided data players are more likely to be injured indoors on synthetic turf. While the NFL is always trying to improve player safety, changing the fields to natural grass would greatly help decrease player injuries and be another step in improving player safety.   
+In the NFL, injuries will always happen since that is the nature of sports. Many factors can go into an NFL player's injury, but after looking through the provided data players are more likely to be injured indoors on synthetic turf. While the NFL is always trying to improve player safety, changing the fields to natural grass would greatly help decrease player injuries and be another step in improving player safety. (not final text just temporary Summary for now)  
