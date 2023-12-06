@@ -15,9 +15,11 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
 
 ## Introduction
 
+
   Throughout the NFL's history, it has always been plagued by injuries. However, the NFL is always striving to improve their player's safety and as a result has made vast improvements when it comes to player healthcare, recovery, and medical procedures. Despite these efforts, players continue to be injured and, in recent seasons, injuries appear to be increasing with synthetic turf being one of the major complaints. 
  
    In this analysis, I will be answering whether or not player injuries are impacted by synthetic grass and if there is a way to decrease the amount of injuries caused by them.  
+
   
 # Questions
 
@@ -47,6 +49,7 @@ library(scales)
 library(viridis)
 #helps to create complex tables and manipulate table styles
 library(kableExtra)
+
 ```
 
 ## Key Terms
@@ -88,13 +91,25 @@ The data I will be using is from the website Kaggle. They were provided for an o
 
 ```{r, echo = TRUE, message=FALSE, warning=FALSE}
 
-#Saving my data under new variables 
 injury_record <- read.csv("InjuryRecord - InjuryRecord.csv")
 head(injury_record)
 play_list <- read.csv("PlayList - PlayList.csv")
 head(play_list)
 
 ```
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
+  geom_bar() +
+  geom_text(aes(label = stat(count), group = 1), 
+            stat = "count", 
+            vjust = -0.5, 
+            position = position_stack(), 
+            color = "black", 
+            size = 3) +
+  labs(title = "Injuries By Body Part", x = "Body Part", y = "Total")
+```
+
 
 (Clean up the data)
 
@@ -117,13 +132,15 @@ ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
 ```
 
 (facet plot graph that shows which positions are being injured the most)
-
+(make bars darker)
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
-ggplot(play_list, aes(x = Position, fill = Position)) +
-  geom_bar(alpha = (1/3), position = "stack") +
-  geom_text(stat = "count", aes(label = ..count..),
-            position = position_stack(vjust = 0.5), 
-            color = "black", size = 3) +
+ggplot(play_list %>% group_by(Position) %>%  count(Position)) +
+  geom_col(aes(x = reorder(Position, n), y = n), 
+               alpha = (1/3), position = "stack") +
+  # geom_text( aes(x=n,y=Position,label = n),
+  #           position = position_stack(vjust = 0.5),
+  #           color = "black", size = 3) +
+  coord_flip() + 
   labs(title = "Injuries Based on Position", x = "Position", y = "Total")
 
 ```
@@ -140,8 +157,8 @@ Here is a list for all of the different stadiums where the injuries happened. (t
 (facet graph that shows which position is being injured more and on which surface)
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(play_list, aes(x = Position, y = FieldType)) +
-  geom_area() +
+ggplot(play_list, aes( x = FieldType)) +
+  geom_bar() +
   scale_fill_viridis(discrete = TRUE) +
   theme(legend.position = "none") +
   ggtitle("Injuries based on field type") +
@@ -169,11 +186,9 @@ ggplot(injury_record, aes(x = Surface, fill = Surface)) +
             color = "black", 
             size = 3) +
   scale_fill_manual(values = c("Natural" = "forestgreen", "Synthetic" = "darkolivegreen")) +
-  labs(title = "Injuries Based on Surface", x = "Surface", y = "Total") +
-  theme_minimal()
 
+  labs(title = "Injuries Based on Surface", x = "Surface", y = "Total")
 ```
-
 
 # Synthetic Turf
 Now that we've realized that there is a higher chance for players to be injured on Synthetic Turf. Let's go into a brief history lesson about synthetic turf so we can understand it better. 
@@ -193,3 +208,4 @@ However, after researching the true costs of synthetic turf I've discovered that
 # Summary
 
 In the NFL, injuries will always happen since that is the nature of sports. Many factors can go into an NFL player's injury, but after looking through the provided data players are more likely to be injured indoors on synthetic turf. While the NFL is always trying to improve player safety, changing the fields to natural grass would greatly help decrease player injuries and be another step in improving player safety. (not final text just temporary Summary for now)  
+
