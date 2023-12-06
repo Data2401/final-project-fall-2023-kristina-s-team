@@ -10,46 +10,195 @@ toc: yes
 ---
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
 ```
 
-# Introduction
+## Introduction
 
+  Throughout the NFL's history, it has always been plagued by injuries. However, the NFL is always striving to improve their player's safety and as a result has made vast improvements when it comes to player healthcare, recovery, and medical procedures. Despite these efforts, players continue to be injured and, in recent seasons, injuries appear to be increasing. 
+  
+  In this analysis, I will be answering whether or not player injuries decrease throughout a season and if there is anything we can do to lessen the amount of injuries overall. 
+  
+  
+# Questions
 
-# Packages I Used
+The questions I will be asking and attempting to answer are:
+
+* ARE injuries actually getting better?
+
+* Do player injuries increase or decrease throughout a season?
+
+* When during the season do most players get injured?
+
+* Which positions get injured more often?
+
+* What is the cause of these injuries if any?
+
+* Is there a relationship between injuries and the type of turf stadiums use?
+
+* Is there a way to lessen the amount of injuries in the NFL?
+
+## Packages I Used
 ```{r, echo = TRUE, message=FALSE, warning=FALSE}
+#helps tidy data
+library(tidyr)
+#helps to wrangle data
+library(dplyr)
 #helps with data import, tidying, manipulation and data visualization
 library(tidyverse)
 #helps create complex graphs and plots
 library(ggplot2)
 #will help with dates and times
 library(scales)
+#to make my graphs look pretty
+library(viridis)
+#helps to create complex tables and manipulate table styles
+library(kableExtra)
 ```
 
-# The Data
+## Key Terms
+### Injury Data File
+* PlayerKey - Uniquely identifies a player with a five-digit numerical key
+* GameID - Uniquely identifies a player's games(not strictly in temporal order)
+* PlayKey - Identifies a player's plays within a game(in sequential order)
+* BodyPart - Identifies the injured body part(Knee, Ankle, Foot, etc.)
+* Surface - Identifies the playing surface at time of injury(Natural or Synthetic)
+* DM_M1 - One-Hot Encoding indicating 1 or more days missed due to injury
+* DM_M7 - One-Hot Encoding indicating 7 or more days missed due to injury
+* DM_M28 - One-Hot Encoding indicating 28 or more days missed due to injury
+* DM_M42 - One-Hot Encoding indicating 42 or more days missed due to injury
 
-The data I will be using is from different various websites about NFL injuries throughout the 2016-2020 seasons. However, one of the articles does not include any data about the 2017-2018 season as they deemed the records incomplete so they did not include that season in their article. 
+### Play List
+* PlayerKey - Uniquely identifies a player with a five-digit numerical key
+* GameID - Uniquely identifies a player's games(not strictly in temporal order)
+* PlayKey - Identifies a player's plays within a game(in sequential order)
+* RosterPosition - provides the player's roster position
+* PlayerDay - an integer sequence that reflects the timeline of a player's participation in games; use this field to sequence player participation
+* PlayerGame - uniquely indentifies a player's games; matches the last integer of the GameID(not strictly in temporal order of game occurrence)
+* StadiumType - a free text description of the type of stadium(open, closed dome, etc.)
+* FieldType - a categorical description of the field type(Natural or Synthetic)
+* Temperature - on-field temperature at the start of the game(not always available - for closed dome/indoor stadiums this field may not be relevant as the temperature and weather are controlled)
+* Weather - a free text descroption of the weather at the stadium(for some games this isn't always available)
+* PlayType - categorical description of play type(pass, run, kickoff, etc.)
+* Position - a categorical variable denoting the player's position for the play(RB, QB, LB, etc.)
+* PositionGroup - a categorical variable denoting the player's position group for the position held during the play
+***
+
+## The Data
+
+[Here is the Link for the Data](https://www.kaggle.com/competitions/nfl-playing-surface-analytics/data?select=PlayerTrackData.csv)
+
+The data I will be using is from the website Kaggle. They were provided for an official NFL Data competition and provide information regarding player injuries throughout two seasons. 
+
+ * Injury Record: This csv file contains information on 105 lower-limb injuries that occured during regular season games over two seasons. Injuries can be linked to specific records in a player history using the PlayerKey, GameID, and PlayKey fields.
+ * Play List: The play list file contains the details for 267, 005 player-plays that make up the dataset. Each play is indexed by PlayKey, GameID, and PlayKey fields. Details about the game and play include the player's assigned roster position, stadium type, field type, weather, play type, position for the play, and position group. 
 
 ```{r, echo = TRUE, message=FALSE, warning=FALSE}
-early_injuries_positions <- read.csv("Preseason Injury Positions.csv")
-entire_season <- read.csv("InjuryRecord - InjuryRecord.csv")
+injury_record <- read.csv("InjuryRecord - InjuryRecord.csv")
+head(injury_record)
+play_list <- read.csv("PlayList - PlayList.csv")
+head(play_list)
+
+```
+
+Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening from the lower limbs. 
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
+  geom_bar() +
+  geom_text(aes(label = stat(count), group = 1), 
+            stat = "count", 
+            vjust = -0.5, 
+            position = position_stack(), 
+            color = "black", 
+            size = 3) +
+  labs(title = "Injuries By Body Part", x = "Body Part", y = "Total")
+```
+(fact plot graph that shows which positions are being injured the most)
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+ggplot(play_list, aes(x = Position, fill = Position)) +
+  geom_bar(alpha = (1/3), position = "stack") +
+  geom_text(stat = "count", aes(label = ..count..),
+            position = position_stack(vjust = 0.5), 
+            color = "black", size = 3) +
+  labs(title = "Injuries Based on Position", x = "Position", y = "Total")
+
+```
+
+# Stadiums
+
+Here are all of the different stadiums where the injuries happened. (this is where kableextra goes)
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+
+  
+```
+
+
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+
+```
+
+(facet graph that shows which position is being injured more and on which surface)
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+ggplot(play_list, aes(x = Position, y = FieldType)) +
+  geom_area() +
+  scale_fill_viridis(discrete = TRUE) +
+  theme(legend.position = "none") +
+  ggtitle("Injuries based on field type") +
+  theme( 
+    legend.position = "none",
+    panel.spacing = unit(0, "lines"),
+    strip.text.x = element_text(size = 7), 
+  ) +
+  facet_wrap(~Position, scale = "free_y")
+
+```
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+
+
+```
+
+
+```{r,echo = FALSE, message=FALSE, warning=FALSE}
+ggplot(play_list) +
+  geom_col(aes(x = PlayerGame, y = Position), fill = "purple1") 
 
 ```
 
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
-data_2016 <- subset(early_injuries_positions, Year == 2016)
-  
-ggplot(early_injuries_positions, aes(x = QB, y = 1, color = QB)) +
-  geom_bar(color = "black", alpha = 0.7) +
-  geom_text(stat = "count", aes(label = after_stat(count)), vjust = -0.5, size = 3) +
-  labs(title = "Body Part Injuries", x = "Year", y = "Total") 
+ggplot(injury_record, aes(x = Surface, fill = Surface)) +
+  geom_bar(width = 0.5, color = "black") +
+  geom_text(aes(label = stat(count), group = 1), 
+            stat = "count", 
+            vjust = -0.5, 
+            position = position_stack(), 
+            color = "black", 
+            size = 3) +
+  scale_fill_manual(values = c("Natural" = "forestgreen", "Synthetic" = "darkolivegreen")) +
+  labs(title = "Injuries Based on Surface", x = "Surface", y = "Total") +
+  theme_minimal()
+
 ```
 
 
+# Synthetic Turf
+Now that we've realized that there is a higher chance for players to be injured on Synthetic Turf. Let's go into a brief history lesson about synthetic turf so we can understand it better. 
 
-# References
+Synthetic turf, also known as artificial turf, is a specially designed surface composed of synthetic fibers that emulate the appearance and texture of natural grass. Modern iterations of synthetic turf predominantly utilize materials such as nylon, polypropylene, and recycled crumb rubber. Players often attest to experiencing enhanced traction and cutting ability when playing on synthetic turf compared to natural grass. However, this also leads to more lower limb injuries that wouldn't happen otherwise. 
+
+The first NFL team to officially use synthetic turf on their home field was the Seattle Seahawks in 2002. This largely impacted the league as there was an increase in team owners deciding to change their fields in favor of synthetic turf. This was largely due to the owners realizing that synthetic turf is cheaper and easier to manage than natural grass. As of 2021, 15 NFL fields out of 30 use synthetic turf.
+
+***
+
+## References
 
 
+# Summary
 
-# Conclusion
+In the NFL, injuries will always happen since that is the nature of sports. Many factors can go into an NFL player's injury, but after looking through the provided data players are more likely to be injured indoors on synthetic turf. While the NFL is always trying to improve player safety, changing the fields to natural grass would greatly help decrease player injuries and be another step in improving player safety.   
