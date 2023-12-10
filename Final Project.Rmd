@@ -16,16 +16,14 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
 ## Introduction
 
 
-  Throughout the NFL's history, it has always been plagued by injuries. However, the NFL is always striving to improve their player's safety and as a result has made vast improvements when it comes to player healthcare, recovery, and medical procedures. Despite these efforts, players continue to be injured and, in recent seasons, injuries appear to be increasing with synthetic turf being one of the major complaints. 
- 
-   In this analysis, I will be answering whether or not player injuries are impacted by synthetic grass and if there is a way to decrease the amount of injuries caused by them.  
-
+  Throughout the NFL's history, it has always been plagued by injuries. However, the NFL is always striving to improve their player's safety and as a result has made vast improvements when it comes to player healthcare, recovery, and medical procedures. Despite these efforts, players continue to be injured and, in recent seasons, injuries appear to be increasing with synthetic turf being one of the major player complaints. Is synthetic turf increasing the amount of injuries players are receiving in a season? 
+  
   
 # Questions
 
 The questions I will be asking and attempting to answer are:
 
-* Is there a relationship between injuries and the type of turf stadiums use?
+* Is there a relationship between injuries and the type of field stadiums use?
 
 * Which positions get injured more often?
 
@@ -98,26 +96,24 @@ head(play_list)
 
 ```
 
+# Cleaning up the Data
+
+First we will try to find all of the different players in the datasets. 
+
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
-ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
-  geom_bar() +
-  geom_text(aes(label = stat(count), group = 1), 
-            stat = "count", 
-            vjust = -0.5, 
-            position = position_stack(), 
-            color = "black", 
-            size = 3) +
-  labs(title = "Injuries By Body Part", x = "Body Part", y = "Total")
+injury_record %>% count(PlayerKey)
+injury_record %>% count(GameID)
+
+```
+
+```{r}
+
 ```
 
 
-(Clean up the data)
+Now that we have cleaned up the data let's figure out the different types of injuries that players in our data have received. For this we will create a bar graph and 
 
-```{r, echo = FALSE, message=FALSE, warning=FALSE}
- 
-```
-
-Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankle. With both of them making up 86% of the total injuries. 
+Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankle. With both of them making up 86% of the total injuries. This suggests that 
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
