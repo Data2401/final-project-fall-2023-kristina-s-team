@@ -43,10 +43,10 @@ library(tidyverse)
 library(ggplot2)
 #will help with dates and times
 library(scales)
-#to make my graphs look pretty
+#to help create visually appealing graphs
 library(viridis)
-#helps to create complex tables and manipulate table styles
-library(kableExtra)
+#helps create interactive web applications for one of my tables
+library(shiny)
 
 ```
 
@@ -97,25 +97,19 @@ head(play_list)
 ```
 
 # Cleaning up the Data
+I will be filtering out the different types of stadiums and grouping them up with each player. 
 
-First we will try to find all of the different players in the datasets. 
-
-```{r, echo = FALSE, message=FALSE, warning=FALSE}
+```{r, echo = TRUE, message=FALSE, warning=FALSE}
 injury_record %>% count(PlayerKey)
-injury_record %>% count(GameID)
-
-```
-
-```{r}
 
 ```
 
 
-Now that we have cleaned up the data let's figure out the different types of injuries that players in our data have received. For this we will create a bar graph and 
 
-Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankle. With both of them making up 86% of the total injuries. This suggests that 
+# Where the injuries happened on the player's body
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
+
 ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
   geom_bar() +
   geom_text(aes(label = stat(count), group = 1), 
@@ -127,32 +121,39 @@ ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
   labs(title = "Injuries By Body Part", x = "Body Part", y = "Total")
 ```
 
-(facet plot graph that shows which positions are being injured the most)
-(make bars darker)
+Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankles. With both of them making up 86% of the total injuries. This suggests that players are either being tackled below their waist a lot or the possibility that something is going on with their  
+
+I plotted the data and put them into a bar graph so we can see all of the different injuries.
+For this bar graph I used BodyPart for my x-axis and the total injuries are the y-axis
+
+# Which positions are being injured the most?
+
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 ggplot(play_list %>% group_by(Position) %>%  count(Position)) +
   geom_col(aes(x = reorder(Position, n), y = n), 
-               alpha = (1/3), position = "stack") +
-  # geom_text( aes(x=n,y=Position,label = n),
-  #           position = position_stack(vjust = 0.5),
-  #           color = "black", size = 3) +
+               alpha = (1), position = "stack") +
   coord_flip() + 
   labs(title = "Injuries Based on Position", x = "Position", y = "Total")
 
 ```
 
+
+
 # Stadiums
 
-Here is a list for all of the different stadiums where the injuries happened. (this is where kableextra goes)
+Here is a list of all of the different stadiums where the injuries happened. 
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
-
+play_list %>% count(StadiumType)
   
 ```
 
-(facet graph that shows which position is being injured more and on which surface)
+# Which position is being injured on which surface type? 
+
+In this graph there is a
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
+
 ggplot(play_list, aes( x = FieldType)) +
   geom_bar() +
   scale_fill_viridis(discrete = TRUE) +
@@ -182,7 +183,7 @@ ggplot(injury_record, aes(x = Surface, fill = Surface)) +
             color = "black", 
             size = 3) +
   scale_fill_manual(values = c("Natural" = "forestgreen", "Synthetic" = "darkolivegreen")) +
-
+  scale_color_gradient2(low = "white", high = "green") +
   labs(title = "Injuries Based on Surface", x = "Surface", y = "Total")
 ```
 
@@ -191,9 +192,9 @@ Now that we've realized that there is a higher chance for players to be injured 
 
 Synthetic turf, also known as artificial turf, is a specially designed surface composed of synthetic fibers that emulate the appearance and texture of natural grass. Modern iterations of synthetic turf predominantly utilize materials such as nylon, polypropylene, and recycled crumb rubber. Players often attest to experiencing enhanced traction and cutting ability when playing on synthetic turf compared to natural grass. However, this also leads to more lower limb injuries that wouldn't happen otherwise. 
 
-The first NFL team to officially use synthetic turf on their home field was the Seattle Seahawks in 2002. This largely impacted the league as there was an increase in team owners deciding to change their fields in favor of synthetic turf. This was largely due to the owners realizing that synthetic turf is cheaper and easier to manage than natural grass. As of 2021, 15 NFL fields out of 30 use synthetic turf.
+The first NFL team to officially use synthetic turf on their home field was the Seattle Seahawks in 2002. This made a huge impact on the league as there was an increase in team owners deciding to change their fields in favor of synthetic turf. This was largely due to the owners realizing that synthetic turf is cheaper and easier to manage than natural grass. As of 2021, 15 NFL fields out of 30 use synthetic turf.
 
-However, after researching the true costs of synthetic turf I've discovered that the costs to install and maintain synthetic turfs are actually much higher than it would be to maintain natural grass fields. 
+However, after researching the true costs of synthetic turf I've discovered that the costs to install and maintain synthetic turfs are actually much higher than it would be to maintain natural grass fields. Because synthetic turf has to be completely removed and 
 
 ***
 
@@ -203,5 +204,4 @@ However, after researching the true costs of synthetic turf I've discovered that
 
 # Summary
 
-In the NFL, injuries will always happen since that is the nature of sports. Many factors can go into an NFL player's injury, but after looking through the provided data players are more likely to be injured indoors on synthetic turf. While the NFL is always trying to improve player safety, changing the fields to natural grass would greatly help decrease player injuries and be another step in improving player safety. (not final text just temporary Summary for now)  
-
+I was curious if there was a relationship between NFL player injuries and the stadium fields they played on. 
