@@ -1,5 +1,5 @@
 ---
-title: "Is Synthetic Turf Worse for NFL Injuries?"
+title: "Is Synthetic Turf Causing an Increase in NFL Injuries?"
 author: "Kristina Lau"
 date: "2023-11-30"
 output: html_document
@@ -16,9 +16,10 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
 ## Introduction
 
 
-  Throughout the NFL's history, it has always been plagued by injuries. However, the NFL is always striving to improve their player's safety and as a result has made vast improvements when it comes to player healthcare, recovery, and medical procedures. Despite these efforts, players continue to be injured and, in recent seasons, injuries appear to be increasing with synthetic turf being one of the major player complaints. Is synthetic turf increasing the amount of injuries players are receiving in a season? 
+  Throughout the NFL's history, it has always been plagued by injuries. However, the NFL is always striving to improve their player's safety and as a result has made vast improvements when it comes to player healthcare, recovery, and medical procedures. Despite these efforts, players continue to be injured and, in recent seasons, injuries appear to be increasing with synthetic turf being one of the major player complaints. Is synthetic turf causing an increase in the amount of injuries players are receiving in a season? 
   
 ---  
+
 # Questions
 
 The questions I will be asking and attempting to answer are:
@@ -32,6 +33,7 @@ The questions I will be asking and attempting to answer are:
 * Is there a way to lessen the amount of injuries in the NFL?
 
 ---
+
 ## Packages I Used
 ```{r, echo = TRUE, message=FALSE, warning=FALSE}
 #helps tidy data
@@ -82,6 +84,7 @@ library(shiny)
 ***
 
 ---
+
 ## The Data
 
 [Here is the Link for the Data](https://www.kaggle.com/competitions/nfl-playing-surface-analytics/data?select=PlayerTrackData.csv)
@@ -102,6 +105,7 @@ head(play_list)
 
 ```
 ---
+
 # Cleaning up the Data
 
 I manually cleaned up the data in the .csv files by fixing spelling mistakes as there were many typos.
@@ -124,8 +128,16 @@ outdoors <- c("Heinz Field", "Domed, open", "Domed, Open", "Indoors, Open Roof",
 
 ```
 
+  While I was creating one of my graphs, I realized that they had separated the Safety position into: Free Safety (FS), Strong Safety (SS), and Safety (S). So I will be mutating them into the same position 'Safety'. 
+
+```{r}
+#play_list <- mutate(Safety = FS, SS, S)
+
+```
+
 
 ---
+
 # Where on the player's body are the injuries happening the most?
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
@@ -143,7 +155,7 @@ ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
 
 I plotted the data and put them into a bar graph so we can see all of the different injuries. For this bar graph I used 'BodyPart' for my x-axis and the total injuries are the y-axis.
 
-Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankles. With both of them making up 86% of the total injuries. The fact that all of the injuries are lower limb injuries suggests that there could be a relationship between players injuries and the field types they play on. But so far we don't have anything substantial to prove anything that connects player injuries to the field types. 
+Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankles. With both of them making up 86% of the total injuries. The fact that all of the injuries are lower limb injuries suggests that there could be a relationship between player injuries and the field types they play on. But so far we don't have anything substantial to prove anything that connects player injuries to the field types. 
 
 ---
 
@@ -158,14 +170,15 @@ ggplot(play_list %>% group_by(Position) %>%  count(Position)) +
 
 ```
 
-For this graph I plotted a horizontal bar chart to determine which positions were being injured the most. I used 'Position' for the y-axis and the total amount for the x-axis. 
+I created a horizontal bar graph to analyze the frequency of injuries across different positions. The y-axis represents 'Position,' while the x-axis corresponds to the total number of injuries. 
 
-Now we are trying to see which positions tend to be injured the most and according to the graph wide receivers tend to be injured the most. While this would make you think that the reason why wide receivers   
-
+Upon examining the graph, it is evident that wide receivers experience the highest frequency of injuries while punters experience the lowest frequency of injuries. What is interesting to note is that wide receivers, outside linebackers and cornerbacks are the top 3 positions that tend to be injured the most. Wide receivers and cornerbacks are usually paired up together with wide receivers trying to gain yards and cornerbacks trying to stop them. This means that there are plenty of opportunities for injuries between the two positions to happen.  
 
 ---
 
-# Natural grass vs Synthetic Turf
+# Is there a relationship between injuries and the type of field stadiums use? 
+
+## Natural grass vs Synthetic Turf
 
   I will be comparing the injuries that happen on natural grass vs synthetic turf. This will allow us to see which type of field the injuries are happening the most on. For this comparison I will be plotting a bar graph and using the 'Surface' category as the x-axis and then using the total amount of injuries as the y-axis.  
 
@@ -184,12 +197,14 @@ ggplot(injury_record, aes(x = Surface, fill = Surface)) +
 
 According to the data from our dataset, injuries appear to happen more often on synthetic turf than natural grass. With 57% of the injuries happening on synthetic turf. 
 
+Now we're getting somewhere. This helps to prove that of the 105 injuries in the dataset 
+
 ---
 
-# * Is there a relationship between injuries and the type of field stadiums use? 
+# Injuries per Position
 
+  For this graph, I wanted to see which positions were being injured on which field type. I created a facet wrap for each position with the x-axis as the field type and the count as the y-axis.
   
-
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
 ggplot(play_list, aes( x = FieldType)) +
@@ -206,6 +221,8 @@ ggplot(play_list, aes( x = FieldType)) +
 
 ```
 
+Now this is very interesting. This heavily contradicts with the previous graph since the majority of the injuries were happening on synthetic turf. And yet for this graph its saying that there are more injuries happening on natural grass. 
+
 ---
 # Synthetic Turf
 
@@ -213,15 +230,18 @@ Now that we've realized that there is a higher chance for players to be injured 
 
 Synthetic turf, also known as artificial turf, is a specially designed surface composed of synthetic fibers that emulate the appearance and texture of natural grass. Modern iterations of synthetic turf predominantly utilize materials such as nylon, polypropylene, and recycled crumb rubber. Players often attest to experiencing enhanced traction and cutting ability when playing on synthetic turf compared to natural grass. However, this also leads to more lower limb injuries that wouldn't happen otherwise. 
 
-The first NFL team to officially use synthetic turf on their home field was the Seattle Seahawks in 2002. This made a huge impact on the league as there was an increase in team owners deciding to change their fields in favor of synthetic turf and as of 2021, 15 NFL fields out of 30 use synthetic turf. (The reason for there only being 30 stadiums is because the New York Giants and Jets share a stadium and so do the L. A. Chargers and Rams.)
+The adoption of synthetic turf in the NFL gained prominence when the Seattle Seahawks became the first team to install it on their home field in 2002. This move sparked a trend, leading to more team owners opting for synthetic turf. As of 2021, 15 out of 30 NFL stadiums feature synthetic turf. It's worth noting that the shared stadiums of the New York Giants and Jets, as well as the Los Angeles Chargers and Rams, contribute to the total count.
 
-However, after researching the true costs of synthetic turf I've discovered that the costs to install and maintain synthetic turfs are actually much higher than it would be to maintain natural grass fields. So why are more and more NFL stadiums using synthetic turf over natural grass? Because its easier to maintain and lasts longer than natural grass. 
+Despite the rising popularity of synthetic turf, research reveals that the installation and maintenance costs exceed those of natural grass fields. This prompts the question: Why do more NFL stadiums choose synthetic turf over natural grass? Because its easier to maintain and lasts longer than natural grass. 
 
-The owners that prefer synthetic turf believe that synthetic turf is cost-efficient and enhances the performance of the players. 
+Owners favoring synthetic turf argue that it proves cost-efficient and enhances player performance. The surface is easier to maintain and boasts a longer lifespan than natural grass. Despite concerns about an increased risk of injuries, owners who believe in the benefits of synthetic turf are likely to continue its use, sometimes against the preferences of players and other stakeholders.
 
-***
+---
+# Is there a way to lessen the amount of injuries in the NFL?
+
+Yes, there is a way to lessen the amount of injuries in the NFL and that is for all NFL stadiums to use natural grass.  
 
 ---
 # Summary
 
-I was curious if there was a relationship between NFL player injuries and the stadium fields they played on. 
+I was curious if synthetic turf was the cause of an increase in NFL injuries. For this analysis I first tried to look at what were the most common types of injuries with knee injuries being the highest. Next, I 
