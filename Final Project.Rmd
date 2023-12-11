@@ -90,6 +90,7 @@ The data I will be using is from the website Kaggle. They were provided for an o
  
  
 For these datasets, I will be reading them in and assigning them to new variables. I will also be displaying the heads of the datasets. 
+
 ```{r, echo = TRUE, message=FALSE, warning=FALSE}
 
 injury_record <- read.csv("InjuryRecord - InjuryRecord.csv")
@@ -111,9 +112,7 @@ full_data <- read_csv("fulldata.csv")
 
 ```
 
-Here we can see that many of the different stadium types are primarily either indoors or outdoors.
-
-Something of note is that there is a strange category called 'Cloudy' which is more than likely a mistake when inputting the data. There are also missing entries for the stadium type and the 'Heinz Field' category. This stadium is an outdoor stadium but it is weird that they specifically named this one stadium.  
+Something of note that I did was I manually went into the full_data file and changed the FS and SS categories into S. This helps to merge all of them into 1 position because both FS and SS are considered the same position. 
 
 
 # Where on the player's body are the injuries happening the most?
@@ -133,7 +132,7 @@ ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
 
 I plotted the data and put them into a bar graph so we can see all of the different injuries. For this bar graph I used 'BodyPart' for my x-axis and the total injuries are the y-axis.
 
-Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankles. With both of them making up 86% of the total injuries. The fact that all of the injuries are lower limb injuries suggests that there could be a relationship between player injuries and the field types they play on. But so far we don't have anything substantial to prove anything that connects player injuries to the field types. 
+Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankles. With both of them making up 86% of the total injuries. The fact that all of the injuries are lower limb injuries suggests that there could be a relationship between player injuries and the field types they play on. However, we currently lack substantial evidence that could link player injuries directly to specific field types. 
 
 
 # Which positions get injured more often?
@@ -149,7 +148,7 @@ ggplot(full_data %>% group_by(Position) %>%  count(Position)) +
 
 Next, I created a horizontal bar graph to analyze the rate of injuries across different positions. The y-axis represents 'Position,' while the x-axis corresponds to the total number of injuries. 
 
-Upon examining the graph, it is evident that wide receivers experience the highest rate of injuries while defensive backs experience the lowest rate of injuries. What is interesting to note is that wide receivers, outside linebackers, and cornerbacks are the top 3 positions that tend to be injured the most. What is interesting about these 3 positions is that they're all
+Upon examining the graph, it is evident that wide receivers experience the highest rate of injuries while defensive backs experience the lowest rate of injuries. What is interesting to note is that wide receivers, outside linebackers, and cornerbacks are the top 3 positions that tend to be injured the most. What is interesting about these 3 positions is that they all cover each other. Wide receivers can be covered by either cornerbacks or outside linebackers but they are usually covered by cornerbacks. Now that we have determined which positions are being injured the most let's move on and see the relationship between injuries and the type of fields they happen on. 
 
 
 # Is there a relationship between injuries and the type of field stadiums use? 
@@ -197,7 +196,7 @@ ggplot(full_data, aes( x = FieldType)) +
 
 ```
 
-The correlation between injuries and playing surface becomes particularly intriguing when examining position specific injury rates on different field types. Notably, injuries vary significantly based on whether players compete on synthetic turf or natural grass. Four positions, Defensive Backs, Defensive Tackles, Inside Linebackers, and Cornerbacks,  experienced the majority of their injuries on synthetic turf. In contrast, three positions, Middle Linebackers, Tackles, and Outside Linebackers, encountered the majority of their injuries on natural grass. The remaining positions, such as Centers, Tight Ends, and Linebackers, were closely tied in injury rates. This observation emphasizes the complexity of the relationship between injuries, player positions, and field types. While it's evident that both synthetic turf and natural grass contribute to injuries across positions, the exact nature of this relationship remains unclear, with synthetic turf showing a higher rate of injuries per position.
+The correlation between injuries and playing surface becomes particularly intriguing when examining position specific injury rates on different field types. Notably, injuries vary significantly based on whether players compete on synthetic turf or natural grass. Four positions, Defensive Backs, Defensive Tackles, Inside Linebackers, and Cornerbacks,  experienced the majority of their injuries on synthetic turf. In contrast, three positions, Middle Linebackers, Tackles, and Outside Linebackers, encountered the majority of their injuries on natural grass. The remaining positions, such as Centers, Tight Ends, and Linebackers, were closely tied in injury rates. This observation emphasizes the complexity of the relationship between injuries, player positions, and field types. While it's evident that both synthetic turf and natural grass cause injuries across all positions, the exact nature of this relationship remains unclear, with synthetic turf showing a higher rate of injuries per position.
 
 
 # Synthetic Turf
@@ -215,9 +214,9 @@ Owners favoring synthetic turf argue that it proves cost-efficient and enhances 
 
 # Is there a way to lessen the amount of injuries in the NFL?
 
-Yes, there is a way to lessen the amount of injuries in the NFL and that is for all NFL stadiums to use natural grass. While there isn't a way to completely get rid of injuries, the next best thing we can do is to try to lessen the amount of injuries for the player's safety. The
+Yes, there is a way to lessen the amount of injuries in the NFL and that is for all NFL stadiums to use natural grass. While there isn't a way to completely get rid of injuries, the next best thing we can do is to try to lessen the amount of injuries for the player's safety. If the NFL wishes to improve the health and safety of their players, they need to consider doing all they can for them which includes changing the fields back to natural grass. 
 
 
 # Summary
 
-I was curious if synthetic turf was the cause of an increase in NFL injuries. For this analysis I first tried to look at what were the most common types of injuries with knee injuries being the highest. Next, I 
+I was curious if synthetic turf was the cause of an increase in NFL injuries. I did this by creating cleaning up the data in the datasets and creating a separate csv file to use for this analysis. For this analysis I first tried to look at what were the most common types of injuries by creating a bar graph and discovered that knee injuries were the highest. Next, I looked at which positions were being injured the most with wide receivers being the most injured. Then I created a bar graph which type of field the players were being injured on the most with synthetic turf being the highest. After that, I created a facet bar graph that shows the different types of fields the injuries happened on with various results per position. While I was able to discover that synthetic turf caused the most amount of injuries, the limitations for this is that this only applies for this dataset. This means that there could possibly be injuries that were missed or weren't included for this dataset for whatever reason. In conclusion, injuries are more likely to happen on a synthetic turf field and if the NFL does not change the majority of their fields back to natural grass player injuries will continue to increase.   
