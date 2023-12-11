@@ -23,11 +23,13 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
 
 The questions I will be asking and attempting to answer are:
 
-* Is there a relationship between injuries and the type of field stadiums use?
+* Where on the player's body are the injuries happening the most?
 
 * Which positions get injured more often?
 
 * What is the cause of these injuries if any?
+
+* Is there a relationship between injuries and the type of field stadiums use?
 
 * Is there a way to lessen the amount of injuries in the NFL?
 
@@ -86,7 +88,9 @@ The data I will be using is from the website Kaggle. They were provided for an o
 
  * Injury Record: This csv file contains information on 105 lower-limb injuries that occured during regular season games over two seasons. Injuries can be linked to specific records in a player history using the PlayerKey, GameID, and PlayKey fields.
  * Play List: The play list file contains the details for 267, 005 player-plays that make up the dataset. Each play is indexed by PlayKey, GameID, and PlayKey fields. Details about the game and play include the player's assigned roster position, stadium type, field type, weather, play type, position for the play, and position group. 
-
+ 
+ 
+For these datasets, I will be reading them in and assigning them to new variables. I will also be displaying the heads of the datasets. 
 ```{r, echo = TRUE, message=FALSE, warning=FALSE}
 
 injury_record <- read.csv("InjuryRecord - InjuryRecord.csv")
@@ -97,16 +101,17 @@ head(play_list)
 ```
 
 # Cleaning up the Data
+
 I will be filtering out the different types of stadiums and grouping them up with each player. 
 
 ```{r, echo = TRUE, message=FALSE, warning=FALSE}
-injury_record %>% count(PlayerKey)
+play_list %>% count(StadiumType)
 
 ```
 
 
 
-# Where the injuries happened on the player's body
+# Where on the player's body are the injuries happening the most?
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 
@@ -121,7 +126,7 @@ ggplot(injury_record, aes(x = BodyPart, fill = BodyPart)) +
   labs(title = "Injuries By Body Part", x = "Body Part", y = "Total")
 ```
 
-Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankles. With both of them making up 86% of the total injuries. This suggests that players are either being tackled below their waist a lot or the possibility that something is going on with their  
+Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankles. With both of them making up 86% of the total injuries. This suggests that players are either being tackled below their waist a lot or there is a possibility that   
 
 I plotted the data and put them into a bar graph so we can see all of the different injuries.
 For this bar graph I used BodyPart for my x-axis and the total injuries are the y-axis
@@ -150,7 +155,6 @@ play_list %>% count(StadiumType)
 
 # Which position is being injured on which surface type? 
 
-In this graph there is a
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -183,7 +187,6 @@ ggplot(injury_record, aes(x = Surface, fill = Surface)) +
             color = "black", 
             size = 3) +
   scale_fill_manual(values = c("Natural" = "forestgreen", "Synthetic" = "darkolivegreen")) +
-  scale_color_gradient2(low = "white", high = "green") +
   labs(title = "Injuries Based on Surface", x = "Surface", y = "Total")
 ```
 
