@@ -104,12 +104,6 @@ head(play_list)
 
 I manually cleaned up the data in the .csv files by fixing spelling mistakes as there were many typos.
 
-I will be filtering out the different types of stadiums and grouping them up with each player. I first did this by using the count function to show each different stadium type.
-
-```{r, message=FALSE, warning=FALSE}
-play_list %>% count(StadiumType)
-```
-
 I also created a left join and merged together the PlayList and InjuryRecord csv files so that way I can filter out the necessary data I need. The new dataset I made is called full_data. 
 
 ```{r, echo=FALSE, message=FALSE, warning= FALSE}
@@ -142,7 +136,6 @@ I plotted the data and put them into a bar graph so we can see all of the differ
 Here are the different types of injuries in the dataset. There are 105 total injuries with all of them happening to the lower limbs. What is interesting about this data is that the majority of the injuries happened to the knees and ankles. With both of them making up 86% of the total injuries. The fact that all of the injuries are lower limb injuries suggests that there could be a relationship between player injuries and the field types they play on. But so far we don't have anything substantial to prove anything that connects player injuries to the field types. 
 
 
-
 # Which positions get injured more often?
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
@@ -154,9 +147,10 @@ ggplot(full_data %>% group_by(Position) %>%  count(Position)) +
 
 ```
 
-Next, I created a horizontal bar graph to analyze the frequency of injuries across different positions. The y-axis represents 'Position,' while the x-axis corresponds to the total number of injuries. 
+Next, I created a horizontal bar graph to analyze the rate of injuries across different positions. The y-axis represents 'Position,' while the x-axis corresponds to the total number of injuries. 
 
-Upon examining the graph, it is evident that wide receivers experience the highest frequency of injuries while defensive backs experience the lowest frequency of injuries. What is interesting to note is that wide receivers, outside linebackers, and cornerbacks are the top 3 positions that tend to be injured the most. Wide receivers and cornerbacks are usually paired against each other with wide receivers trying to gain yards and cornerbacks trying to stop them. This means that there are plenty of opportunities for injuries between the two positions to happen. Outside Linebackers tend to be lined up against either running backs or tight ends 
+Upon examining the graph, it is evident that wide receivers experience the highest rate of injuries while defensive backs experience the lowest rate of injuries. What is interesting to note is that wide receivers, outside linebackers, and cornerbacks are the top 3 positions that tend to be injured the most. What is interesting about these 3 positions is that they're all
+
 
 # Is there a relationship between injuries and the type of field stadiums use? 
 
@@ -179,7 +173,7 @@ ggplot(full_data, aes(x = Surface, fill = Surface)) +
 
 According to the data from our dataset, injuries appear to happen more often on synthetic turf than natural grass. With 54.29% of the injuries happening on synthetic turf. 
 
-Now we're getting somewhere. This helps to prove that of the 105 injuries in the dataset over half of them happen on synthetic turf. However, there
+Now we're getting somewhere. This helps to prove that of the 105 injuries in the dataset over half of them happen on synthetic turf. This helps to prove that synthetic turf is causing more injuries for our analysis. 
 
 
 
@@ -203,7 +197,7 @@ ggplot(full_data, aes( x = FieldType)) +
 
 ```
 
-Now this is very interesting. Looking at the injuries per position based on each field type we can see that position injuries heavily vary depending on which surface they played on. There were four positions that had the majority of their injuries on synthetic turf: Defensive Backs, Defensive Tackles, Inside Linebackers, and Cornerbacks. While there were three positions that had the majority of their injuries on natural grass: Middle Linebackers, Tackles, and Outside Linebackers. The rest of the players injuries were very close with three of the positions injuries being tied: Centers, Tight Ends, and Linebackers. 
+The correlation between injuries and playing surface becomes particularly intriguing when examining position specific injury rates on different field types. Notably, injuries vary significantly based on whether players compete on synthetic turf or natural grass. Four positions, Defensive Backs, Defensive Tackles, Inside Linebackers, and Cornerbacks,  experienced the majority of their injuries on synthetic turf. In contrast, three positions, Middle Linebackers, Tackles, and Outside Linebackers, encountered the majority of their injuries on natural grass. The remaining positions, such as Centers, Tight Ends, and Linebackers, were closely tied in injury rates. This observation emphasizes the complexity of the relationship between injuries, player positions, and field types. While it's evident that both synthetic turf and natural grass contribute to injuries across positions, the exact nature of this relationship remains unclear, with synthetic turf showing a higher rate of injuries per position.
 
 
 # Synthetic Turf
